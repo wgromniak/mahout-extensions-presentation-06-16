@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Skalowalna sekelcja atrybutów</title>
+
+		<meta name="description" content="Skalowalna sekelcja atrybutów">
+		<meta name="author" content="Wiktor Gromniak">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+                <section>
+                    <h2>Skalowalna selekcja atrybutów</h2>
+                    <h4>redukty losowe, dynamiczne i MapReduce</h4>
+                </section>
+
+                <section>
+                    <p>
+                        <a href ="http://students.mimuw.edu.pl/~wg311643/msc_thesis.pdf">students.mimuw.edu.pl/~wg311643/msc_thesis.pdf</a>
+                    </p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>RandomReducts</h2>
+                        <img src="RR.png">
+                    </section>
+                    <section>
+                        <h2>MCFS</h2>
+                        <img src="MCFS.png">
+                    </section>
+                    <section>
+                        <h2>Fast cut-off</h2>
+                        <img style="max-width: 80%" src="fast_cutoff.png">
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Eksperymenty</h2>
+                    </section>
+                    <section>
+                        <h2>Test harness</h2>
+                        <p>
+                            9 x ( 4x Intel Xeon E3-1220 @ 3.10GHz, 32GB RAM, 1TB HDD )
+                        </p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <table>
+                            <tr><td></td><th># obiektów</th><th># atrybutów</th><th># klas dec.</th></tr>
+                            <tr><td>ALL</td><td>190</td><td>22276</td><td>5</td></tr>
+                            <tr><td>ATC</td><td>160</td><td>61358</td><td>2</td></tr>
+                            <tr><td>BTu</td><td>180</td><td>54612</td><td>4</td></tr>
+                            <tr><td>SSh</td><td>227</td><td>54674</td><td>5</td></tr>
+                        </table>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>5000 podtablic</li>
+                            <li>\( \sqrt{\# \textrm{ wszystkich atrybutów}} \)<br>
+                               <span style="display:inline-block; width: 400px;"></span> atrybutów w podtablicy</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <table>
+                            <tr><td></td><th>RDR</th><th>MCFS</th></tr>
+                            <tr><td>ALL</td><td>82.63% (855)</td><td>86.31% (167)</td></tr>
+                            <tr><td>ATC</td><td>48.75% (1197) <br> [1 iter.: 68.75% (4355)]</td><td>60.00% (5255) <br> [6 iter.: 76.25% (100)]</td></tr>
+                            <tr><td>BTu</td><td>53.88% (1369) <br> [1 iter.: 65.00% (4531)]</td><td>70.55% (1652)</td></tr>
+                            <tr><td>SSh</td><td>40.08% (1553)</td><td>51.54% (2348)</td></tr>
+                        </table>
+                    </section>
+                    <section>
+                        <h3>zbiór ALL</h3>
+                        <table>
+                            <tr> <td> </td> <th> tryb obliczeń </th> <th> czas </th> </tr>
+                            <tr> <td rowspan="3" style="vertical-align: middle"> RDR </td> <td>Standalone</td> <td> 8 min 3 sec </td> </tr>
+                            <tr>                            <td>MapReduce</td> <td> 15 min 45 sec </td> </tr>
+                            <tr>                            <td>Spark</td> <td> 2 min 24 sec</td> </tr>
+                            <tr> <td rowspan="3" style="vertical-align: middle"> MCFS </td> <td>Standalone</td> <td> 143 min 27 sec </td> </tr>
+                            <tr>                            <td>MapReduce</td> <td> 30 min 14 sec </td> </tr>
+                            <tr>                            <td>Spark</td> <td> 20 min 5 sec</td> </tr>
+                        </table>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>
+                            Skalowalność na danych syntetycznych
+                        </h2>
+                        <br>
+                        <p>
+                            \( D = 100 \textrm{ MB} = \) \( 128 \textrm{ atrybutów} \times 409600 \textrm{
+                            obiektów} \)
+                        </p>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>\( i \times 15000 \) podtablic</li>
+                            <li>\( 300 \) atrybutów w podtablicy</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Speed-up</h2>
+                        <br>
+                        <p>
+                            \[ \textrm{speed-up}(n) = \frac{t_1}{t_n} \]
+                        </p>
+                        <ul>
+                            <li> $t_j$ jest czasem obliczeń na $j$ komputerach </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <img src="speed-up.png">
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Scale-up</h2>
+                        <br>
+                        <p>
+                            \[ \textrm{scale-up}(n) = \frac{t_{D_n}}{t_{D_1}} \]
+                        </p>
+                        <ul>
+                            <li> \( t_{D_j} \) jest czasem obliczeń na zbiorze \( j \times D  \) na \(j \) komputerach </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <img src="scale-up.png">
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Size-up</h2>
+                        <br>
+                        <p>
+                            \[ \textrm{size-up}(n) = \frac{t_{S_n}}{t_{S_1}} \]
+                        </p>
+                        <ul>
+                            <li> \( t_{S_j} \) jest czasem obliczeń na zbiorze \( j \times D \) na \( j \) komputerach </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <img src="size-up.png">
+                    </section>
+                </section>
+
+                <section>
+                    <h1>Dziękuję</h1>
+                    <p><a href ="https://github.com/wgromniak/mahout-extensions">github.com/wgromniak/mahout-extensions</a></p>
+                    <p><a href ="http://wgromniak.github.io/mahout-extensions-presentation-06-16/">wgromniak.github.io/mahout-extensions-presentation-06-16</a></p>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/math/math.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
